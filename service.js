@@ -22,6 +22,7 @@ function sendRabbitMQ(logChannel, data){
                 durable: false
              });
 
+
             channel.sendToQueue(queue, Buffer.from(data));
             console.log("logChannel Kuyruğuna Giden Veri : %s", data);
         });
@@ -45,18 +46,19 @@ mongoose.set('useFindAndModify',false);
 
 var logSchema = new mongoose.Schema({
 
-   CreatedTime : {type : Date, default:Date.now},
-    logObject  :  Object
+  CreatedTime : {type : Date, default:Date.now} ,
+    logObject  :  Object 
 });
 
 var logging =mongoose.model('logging', logSchema, 'objlog');
 
-app.post('/insert',async(req,res)=>{        
-    try {
-        var obj = new logging(req.body);  
-        sendRabbitMQ("logChannel", JSON.stringify(obj));             
-        res.send();
+app.post('/insert',async(req,res)=>{      
 
+    try {
+        
+        var objList = new logging(req.body);
+        sendRabbitMQ("logChannel", JSON.stringify(objList));           
+        res.send();
     } 
     catch (error) {
 
