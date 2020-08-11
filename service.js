@@ -43,11 +43,11 @@ app.use(bodyParser.urlencoded({
 mongoose.connect('mongodb://localhost/logop', {useNewUrlParser:true, useUnifiedTopology:true});
 mongoose.set('useFindAndModify',false);
 
-
 var logSchema = new mongoose.Schema({
 
   CreatedTime : {type : Date, default:Date.now} ,
-    logObject  :  Object 
+    logObject  :  Object
+    
 });
 
 var logging =mongoose.model('logging', logSchema, 'objlog');
@@ -55,9 +55,8 @@ var logging =mongoose.model('logging', logSchema, 'objlog');
 app.post('/insert',async(req,res)=>{      
 
     try {
-        
-        var objList = new logging(req.body);
-        sendRabbitMQ("logChannel", JSON.stringify(objList));           
+     //  var objList = new logging(req.body);
+        sendRabbitMQ("logChannel", JSON.stringify(req.body));           
         res.send();
     } 
     catch (error) {

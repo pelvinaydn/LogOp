@@ -12,16 +12,12 @@ app.use(bodyParser.urlencoded({
 mongoose.connect('mongodb://localhost/logop', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
 mongoose.set('useFindAndModify', false);
 
-
-
 var logSchema = new mongoose.Schema({
 
     CreatedTime : {type : Date, default:Date.now} ,
       logObject  :  Object 
   });
   
-
-
 var logging = mongoose.model('logging', logSchema, 'objlog');
 
 amqp.connect('amqp://localhost', function (error0, connection) {
@@ -39,14 +35,12 @@ amqp.connect('amqp://localhost', function (error0, connection) {
         //console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
 
         channel.consume(queue, function (data) {
-            objList = JSON.parse(data.content.toString())
+            objList = JSON.parse(data.content.toString());
 
-
-                
-            //Write MongoDB-------------------------
-            var objLog = new logging(objList);
-            var result = objLog.save();
-            //--------------------------------------
+            for (var i = 0; i < objList.length; i++) {
+                var objLog = new logging(objList[i]);
+                var result = objLog.save();
+            }
             
             console.log("MongoDB'ye Kaydedilen Veri : %s", objList);
         }, {
