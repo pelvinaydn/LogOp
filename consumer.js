@@ -1,7 +1,10 @@
 const express = require('express');
-var app = express();
 var mongoose = require("mongoose");
 var amqp = require('amqplib/callback_api');
+var cors = require('cors');
+var app = express();
+app.use(cors());
+
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
