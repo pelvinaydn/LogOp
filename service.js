@@ -47,8 +47,7 @@ mongoose.set('useFindAndModify',false);
 var logSchema = new mongoose.Schema({
 
   CreatedTime : {type : Date, default:Date.now} ,
-    logObject  :  Object
-    
+    logObject  : Object
 });
 
 var logging =mongoose.model('logging', logSchema, 'objlog');
@@ -61,12 +60,11 @@ app.post('/insert',async(req,res)=>{
         res.send();
     } 
     catch (error) {
-
         return res.status(500).send(error);    
      }
  });
 
 app.listen(3000,()=>{
     console.log('Server is listening on port 3000');
-})
+});
 
